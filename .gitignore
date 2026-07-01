@@ -1,0 +1,93 @@
+# =====================
+# Environment & Secrets
+# =====================
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# =====================
+# Python
+# =====================
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+.tox/
+.pytest_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# =====================
+# Node.js
+# =====================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+
+# =====================
+# Build outputs
+# =====================
+dist/
+build/
+out/
+*.min.js
+*.min.css
+*.bundle.js
+
+# =====================
+# IDE & Editor
+# =====================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =====================
+# OS files
+# =====================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# =====================
+# Logs
+# =====================
+logs/
+*.log
+
+# =====================
+# Data (large files)
+# =====================
+data/*.csv
+data/*.json
+data/*.sqlite
+data/*.db
+!data/.gitkeep
+!data/README.md
+
+# =====================
+# Docker
+# =====================
+docker-compose.override.yml
+.docker/

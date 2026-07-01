@@ -1,0 +1,32 @@
+# =============================================
+# CODEOWNERS — LensPilot AI Assistant
+# =============================================
+# Each line defines a file pattern and the
+# GitHub user(s) or team(s) responsible for
+# reviewing changes to those files.
+#
+# Owners are automatically requested for review
+# when a PR touches their files.
+#
+# Replace placeholder usernames below with
+# actual GitHub usernames when team members
+# are added.
+# =============================================
+
+# --- Backend ---
+/backend/                       @backend-owner
+
+# --- Frontend (Widget & Demo) ---
+/widget/                        @frontend-owner
+/demo-site/                     @frontend-owner
+
+# --- Documentation & Knowledge ---
+/docs/                          @knowledge-owner
+/data/                          @knowledge-owner
+
+# --- Root config (repo owner) ---
+README.md                       @repo-owner
+CONTRIBUTING.md                 @repo-owner
+CODEOWNERS                      @repo-owner
+.gitignore                      @repo-owner
+.env.example                    @repo-owner
