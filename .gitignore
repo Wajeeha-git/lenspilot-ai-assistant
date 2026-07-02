@@ -49,6 +49,11 @@ out/
 *.bundle.js
 
 # =====================
+# Local unpacked archives / duplicate workspaces
+# =====================
+lenspilot-backend/
+
+# =====================
 # IDE & Editor
 # =====================
 .vscode/

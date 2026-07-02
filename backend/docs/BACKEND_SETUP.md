@@ -1,0 +1,107 @@
+# Backend Setup Guide
+
+## 1. Prerequisites
+
+- Python 3.11+ recommended
+- PostgreSQL 14+ with pgvector, or Docker for the provided pgvector image
+- OpenAI API key for live ingestion and chat responses
+
+## 2. Install Dependencies
+
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+## 3. Configure Environment
+
+```bash
+cp .env.example .env
+```
+
+Set at minimum:
+
+- `DATABASE_URL`
+- `OPENAI_API_KEY`
+
+Leave `API_KEY` blank for local development, or set it to require either
+`x-api-key: <key>` or `Authorization: Bearer <key>` on `/chat` and `/ingest`.
+
+## 4. Start Postgres With pgvector
+
+Easiest local path:
+
+```bash
+docker compose up -d postgres
+```
+
+Manual local Postgres path:
+
+```bash
+createdb lenspilot_ai
+psql -d lenspilot_ai -c "CREATE EXTENSION IF NOT EXISTS vector;"
+```
+
+The first Alembic migration also runs `CREATE EXTENSION IF NOT EXISTS vector`.
+
+## 5. Run Migrations
+
+```bash
+alembic upgrade head
+```
+
+Expected tables:
+
+- `documents`
+- `chunks`
+- `chat_sessions`
+- `chat_messages`
+
+## 6. Run Ingestion
+
+```bash
+python ingestion/ingest.py
+```
+
+This loads the placeholder docs from `ingestion/sample_docs/`, chunks them,
+embeds them, and stores them in Postgres. To load real LensPilot material,
+replace those files or point `INGESTION_DOCS_DIR` at another folder.
+Unchanged files are skipped on reruns.
+
+## 7. Run The API
+
+```bash
+uvicorn app.main:app --reload
+```
+
+## 8. Test The API
+
+```bash
+curl http://localhost:8000/api/v1/health
+
+curl -X POST http://localhost:8000/api/v1/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Does LensPilot have a free trial?"}'
+```
+
+Unversioned local compatibility routes also work:
+
+```bash
+curl http://localhost:8000/health
+```
+
+## 9. Run Tests
+
+```bash
+pytest
+```
+
+## Notes
+
+- Embeddings and chat completions call the OpenAI API and cost money per token.
+- `RETRIEVAL_TOP_K` controls how many chunks are sent to the LLM per question.
+- Docker was not available in the current local environment during setup, so
+  live pgvector migration verification should run in GitHub CI or on a machine
+  with Docker/Postgres installed.

@@ -1,16 +1,35 @@
-# Backend
+# LensPilot Brain API
 
-API server, chat engine, and ingestion pipeline for LensPilot AI Assistant.
+FastAPI RAG backend for the LensPilot AI Assistant. It receives questions
+from the chatbot widget, retrieves relevant LensPilot document chunks from
+Postgres/pgvector, calls the configured LLM, and returns an answer with
+sources.
 
-## Structure
+## What Is Included
 
-```
-backend/
-├── src/          # Source code
-├── tests/        # Test suite
-└── README.md     # This file
-```
+- FastAPI app with `/health`, `/chat`, and `/ingest`
+- Versioned aliases under `/api/v1`
+- PostgreSQL schema managed by Alembic
+- pgvector-backed document chunk search
+- File ingestion pipeline for `.md`, `.txt`, `.html`, and `.pdf`
+- Placeholder LensPilot docs for local testing
+- GitHub CI support for tests and migrations
 
-## Setup
+## Local Setup
 
-_Coming soon — setup instructions will be added once the backend scaffold is built._
+See [docs/BACKEND_SETUP.md](docs/BACKEND_SETUP.md).
+
+## API Contract
+
+The shared frontend/backend contract lives at [../docs/API.md](../docs/API.md).
+Backend-local notes are in [docs/API.md](docs/API.md).
+
+## Placeholder Content
+
+These two pieces are intentionally temporary until the Knowledge/Prompt owner
+replaces them with official LensPilot material:
+
+- `ingestion/sample_docs/` - placeholder company docs
+- `app/services/prompt.py` - placeholder system prompt and response rules
+
+Swapping either later does not require API or database schema changes.

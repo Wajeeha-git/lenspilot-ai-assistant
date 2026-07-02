@@ -1,32 +1,26 @@
-# =============================================
-# CODEOWNERS — LensPilot AI Assistant
-# =============================================
-# Each line defines a file pattern and the
-# GitHub user(s) or team(s) responsible for
-# reviewing changes to those files.
+# CODEOWNERS - LensPilot AI Assistant
 #
-# Owners are automatically requested for review
-# when a PR touches their files.
+# Keep this file as a template until the repo owner has invited the approved
+# GitHub collaborators. Do not add usernames here unless that person should be
+# automatically requested for review on matching pull requests.
 #
-# Replace placeholder usernames below with
-# actual GitHub usernames when team members
-# are added.
-# =============================================
+# After members are approved and added to the repo, uncomment and replace the
+# placeholder owners below with real GitHub usernames or teams.
 
-# --- Backend ---
-/backend/                       @backend-owner
+# Backend owner:
+# /backend/     @approved-backend-owner
 
-# --- Frontend (Widget & Demo) ---
-/widget/                        @frontend-owner
-/demo-site/                     @frontend-owner
+# Frontend owner:
+# /widget/      @approved-frontend-owner
+# /demo-site/   @approved-frontend-owner
 
-# --- Documentation & Knowledge ---
-/docs/                          @knowledge-owner
-/data/                          @knowledge-owner
+# Knowledge/content owner:
+# /docs/        @approved-knowledge-owner
+# /data/        @approved-knowledge-owner
 
-# --- Root config (repo owner) ---
-README.md                       @repo-owner
-CONTRIBUTING.md                 @repo-owner
-CODEOWNERS                      @repo-owner
-.gitignore                      @repo-owner
-.env.example                    @repo-owner
+# Repo owner/shared files:
+# README.md         @approved-repo-owner
+# CONTRIBUTING.md  @approved-repo-owner
+# CODEOWNERS       @approved-repo-owner
+# .gitignore       @approved-repo-owner
+# .env.example     @approved-repo-owner

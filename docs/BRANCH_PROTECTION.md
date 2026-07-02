@@ -27,8 +27,8 @@ Enable these settings:
 | ✅ Require a pull request before merging | YES |
 | ✅ Require approvals | YES — set to **1** |
 | ✅ Dismiss stale pull request approvals when new commits are pushed | YES |
-| ✅ Require review from Code Owners | YES |
-| ✅ Require status checks to pass before merging | YES |
+| ✅ Require review from Code Owners | Enable after `CODEOWNERS` has real approved GitHub usernames |
+| ✅ Require status checks to pass before merging | YES - select `Backend tests and migrations` after the first workflow run |
 | ✅ Require branches to be up to date before merging | YES |
 | ✅ Require conversation resolution before merging | YES |
 | ✅ Do not allow bypassing the above settings | YES |
