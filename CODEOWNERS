@@ -1,26 +1,28 @@
-# CODEOWNERS - LensPilot AI Assistant
+# =============================================
+# CODEOWNERS — LensPilot AI Assistant
+# =============================================
+# Each line defines a file pattern and the
+# GitHub user(s) or team(s) responsible for
+# reviewing changes to those files.
 #
-# Keep this file as a template until the repo owner has invited the approved
-# GitHub collaborators. Do not add usernames here unless that person should be
-# automatically requested for review on matching pull requests.
-#
-# After members are approved and added to the repo, uncomment and replace the
-# placeholder owners below with real GitHub usernames or teams.
+# Owners are automatically requested for review
+# when a PR touches their files.
+# =============================================
 
-# Backend owner:
-# /backend/     @approved-backend-owner
+# --- Backend ---
+/backend/                       @Wajeeha-git
 
-# Frontend owner:
-# /widget/      @approved-frontend-owner
-# /demo-site/   @approved-frontend-owner
+# --- Frontend (Widget & Demo) ---
+/widget/                        @nimra-Ashfaq
+/demo-site/                     @nimra-Ashfaq
 
-# Knowledge/content owner:
-# /docs/        @approved-knowledge-owner
-# /data/        @approved-knowledge-owner
+# --- Documentation & Knowledge ---
+/docs/                          @NidaIqbal01
+/data/                          @NidaIqbal01
 
-# Repo owner/shared files:
-# README.md         @approved-repo-owner
-# CONTRIBUTING.md  @approved-repo-owner
-# CODEOWNERS       @approved-repo-owner
-# .gitignore       @approved-repo-owner
-# .env.example     @approved-repo-owner
+# --- Root config (repo owner only) ---
+README.md                       @Wajeeha-git
+CONTRIBUTING.md                 @Wajeeha-git
+CODEOWNERS                      @Wajeeha-git
+.gitignore                      @Wajeeha-git
+.env.example                    @Wajeeha-git
