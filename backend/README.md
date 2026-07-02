@@ -24,6 +24,8 @@ See [docs/BACKEND_SETUP.md](docs/BACKEND_SETUP.md).
 The shared frontend/backend contract lives at [../docs/API.md](../docs/API.md).
 Backend-local notes are in [docs/API.md](docs/API.md).
 
+Security notes live at [../docs/SECURITY.md](../docs/SECURITY.md).
+
 ## Placeholder Content
 
 These two pieces are intentionally temporary until the Knowledge/Prompt owner

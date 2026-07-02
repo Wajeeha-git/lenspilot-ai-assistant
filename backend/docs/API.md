@@ -9,8 +9,7 @@ http://localhost:8000/api/v1
 For local smoke tests, the same endpoints are also exposed without the
 `/api/v1` prefix.
 
-All responses are JSON. FastAPI validation/auth errors use the standard
-`{"detail": ...}` shape.
+All responses are JSON. Error responses use `{"error": "..."}`.
 
 If `API_KEY` is set, `/chat` and `/ingest` require either:
 
@@ -60,10 +59,13 @@ Response `200 OK`:
 Expected errors:
 
 - `401` - missing or invalid API key, only if `API_KEY` is configured
+- `429` - too many `/chat` or `/ingest` requests from the same client
 - `422` - invalid request body
 - `502` - LLM provider failure
 - `503` - retrieval or database lookup failure
 - `500` - unexpected server error
+
+Every response includes `x-request-id` for support/debugging.
 
 ## POST /ingest
 

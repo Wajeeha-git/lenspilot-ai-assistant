@@ -102,6 +102,10 @@ pytest
 
 - Embeddings and chat completions call the OpenAI API and cost money per token.
 - `RETRIEVAL_TOP_K` controls how many chunks are sent to the LLM per question.
+- `RATE_LIMIT_PER_MINUTE` controls per-client rate limiting for `/chat` and
+  `/ingest`. The default is `30`; set it to `0` only for trusted local testing.
+- `ENV=production` refuses to boot with unsafe public settings such as
+  `CORS_ORIGINS=*` or a missing `API_KEY`.
 - Docker was not available in the current local environment during setup, so
   live pgvector migration verification should run in GitHub CI or on a machine
   with Docker/Postgres installed.

@@ -114,10 +114,21 @@ Error responses:
 | Status | Meaning |
 |---:|---|
 | `401` | Missing or invalid API key, when auth is enabled. |
+| `429` | Too many `/chat` or `/ingest` requests from the same client. |
 | `422` | Invalid request body. |
 | `502` | LLM provider failed. |
 | `503` | Knowledge retrieval or database lookup failed. |
 | `500` | Unexpected server error. |
+
+Error body:
+
+```json
+{
+  "error": "Human-readable error message"
+}
+```
+
+Every response includes an `x-request-id` header for support/debugging.
 
 ## POST /ingest
 

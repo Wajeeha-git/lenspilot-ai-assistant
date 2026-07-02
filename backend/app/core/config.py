@@ -44,5 +44,38 @@ class Settings:
         os.path.join(os.path.dirname(__file__), "..", "..", "ingestion", "sample_docs"),
     )
 
+    # --- Security / rate limiting ---
+    # Max requests per client per rolling 60s window. Set to 0 to disable.
+    RATE_LIMIT_PER_MINUTE: int = int(os.getenv("RATE_LIMIT_PER_MINUTE", "30"))
+    LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
+
 
 settings = Settings()
+
+
+def validate_settings_or_warn():
+    """
+    Fail loudly in production, but only warn in development, when settings are
+    convenient for local work but risky for a public deployment.
+    """
+    import logging
+
+    logger = logging.getLogger("lenspilot")
+    is_prod = settings.ENV.lower() in ("production", "prod")
+
+    problems = []
+    if settings.CORS_ORIGINS == ["*"]:
+        problems.append("CORS_ORIGINS is '*'")
+    if not settings.API_KEY:
+        problems.append("API_KEY is not set")
+    if is_prod and "postgres:postgres@localhost" in settings.DATABASE_URL:
+        problems.append("DATABASE_URL still looks like the local default")
+
+    if problems and is_prod:
+        raise RuntimeError(
+            "Refusing to start with ENV=production and insecure settings: "
+            + "; ".join(problems)
+        )
+
+    for problem in problems:
+        logger.warning("[dev-only config warning] %s", problem)
