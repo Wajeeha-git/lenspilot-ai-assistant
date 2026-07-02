@@ -80,9 +80,12 @@ def chat(payload: ChatRequest, db: Session = Depends(get_db), _auth=Depends(veri
         t0 = time.time()
         chunks = retrieve_relevant_chunks(db, payload.message)
         logger.info("Retrieved %d chunks in %.2fs", len(chunks), time.time() - t0)
-    except Exception as e:
+    except Exception:
         logger.exception("Retrieval failed")
-        raise HTTPException(status_code=503, detail=f"Knowledge lookup failed: {e}")
+        raise HTTPException(
+            status_code=503,
+            detail="Knowledge lookup is temporarily unavailable. Please try again shortly.",
+        )
 
     # 2. Build prompt + call LLM
     try:
@@ -134,6 +137,9 @@ def trigger_ingest(_auth=Depends(verify_api_key)):
     try:
         summary = run_ingestion()
         return {"status": "ok", **summary}
-    except Exception as e:
+    except Exception:
         logger.exception("Ingestion failed")
-        raise HTTPException(status_code=500, detail=f"Ingestion failed: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail="Ingestion failed. Check the server logs for details.",
+        )

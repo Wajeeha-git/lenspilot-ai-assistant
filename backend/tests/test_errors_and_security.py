@@ -86,6 +86,18 @@ def test_rate_limit_disabled_when_zero(monkeypatch):
     assert all(response.status_code == 422 for response in responses)
 
 
+def test_retrieval_failure_does_not_leak_internal_exception_text():
+    # No OPENAI_API_KEY is set in this test env, so retrieval will fail.
+    # The client should get a generic message, never the raw exception text.
+    response = client.post("/chat", json={"message": "hello"})
+
+    assert response.status_code == 503
+    error = response.json()["error"]
+    assert error == "Knowledge lookup is temporarily unavailable. Please try again shortly."
+    assert "OPENAI_API_KEY" not in error
+    assert "Traceback" not in error
+
+
 def test_production_validation_fails_fast(monkeypatch):
     monkeypatch.setattr(settings, "ENV", "production")
     monkeypatch.setattr(settings, "CORS_ORIGINS", ["*"])

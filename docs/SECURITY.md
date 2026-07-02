@@ -31,6 +31,16 @@ in-memory and per process, which is fine for a single MVP backend instance. If
 the backend later runs multiple replicas, replace the in-memory store in
 `backend/app/core/middleware.py` with Redis or another shared store.
 
+**`X-Forwarded-For` trust:** the limiter reads this header to find the real
+client IP behind a proxy/load balancer. This is only safe if the backend sits
+behind infrastructure that sets or overwrites this header itself (most PaaS
+load balancers, for example Render, Railway, Fly, or an nginx/ALB in front of
+the container, do this). If the backend container is ever exposed directly to
+the internet with no proxy in front of it, a client can set this header
+themselves to dodge the per-IP limit. Confirm your deployment target sits
+behind a proxy before relying on this for abuse protection; otherwise fall
+back to `request.client.host` only.
+
 ## Request IDs And Logs
 
 Every response includes `x-request-id`. Application logs include request ID,
