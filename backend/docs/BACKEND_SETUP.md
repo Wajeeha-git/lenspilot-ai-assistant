@@ -65,10 +65,47 @@ Expected tables:
 python ingestion/ingest.py
 ```
 
-This loads the placeholder docs from `ingestion/sample_docs/`, chunks them,
-embeds them, and stores them in Postgres. To load real LensPilot material,
-replace those files or point `INGESTION_DOCS_DIR` at another folder.
-Unchanged files are skipped on reruns.
+This loads the LensPilot knowledge base from `ingestion/knowledge_base/`,
+chunks each file by section/heading (so an FAQ answer never gets split
+mid-sentence), embeds the chunks, and stores them in Postgres alongside
+each document's metadata. Unchanged files are skipped on reruns (content
+hash check).
+
+### Knowledge base file format
+
+Each `.md` file may start with a small frontmatter block:
+
+```
+---
+title: FAQ - Customer
+category: FAQ
+audience: customer
+source: LensPilot Knowledge Base v1
+version: 2026-07-03
+public: true
+---
+# body starts here...
+```
+
+All fields are optional -- ingestion falls back to a filename-based guess
+for `title`/`category`, and to `public`/`true` for `audience`/`public`.
+`public: false` hard-excludes a document from `/chat` retrieval regardless
+of similarity score (see `docs/SECURITY.md`).
+
+To add or update content: add/edit a file in `ingestion/knowledge_base/`,
+then rerun `python ingestion/ingest.py`.
+
+### System prompt / behavior rules
+
+These are **not** ingested as retrievable documents -- see the comment at
+the top of `app/services/prompt.py` for why. To change the assistant's
+identity, tone, or hard rules, edit the plain-text files directly:
+- `app/services/prompt_sources/system_prompt.md`
+- `app/services/prompt_sources/tone_and_personality.md`
+- `app/services/prompt_sources/do_not_do.md`
+
+No Python changes or re-ingestion needed -- they're read fresh each time
+the app starts.
 
 ## 7. Run The API
 

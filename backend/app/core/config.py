@@ -35,13 +35,13 @@ class Settings:
 
     # --- RAG tuning ---
     CHUNK_SIZE_WORDS: int = int(os.getenv("CHUNK_SIZE_WORDS", "350"))
-    CHUNK_OVERLAP_WORDS: int = int(os.getenv("CHUNK_OVERLAP_WORDS", "50"))
+    CHUNK_OVERLAP_WORDS: int = int(os.getenv("CHUNK_OVERLAP_WORDS", "30"))
     RETRIEVAL_TOP_K: int = int(os.getenv("RETRIEVAL_TOP_K", "5"))
 
     # --- Ingestion ---
     INGESTION_DOCS_DIR: str = os.getenv(
         "INGESTION_DOCS_DIR",
-        os.path.join(os.path.dirname(__file__), "..", "..", "ingestion", "sample_docs"),
+        os.path.join(os.path.dirname(__file__), "..", "..", "ingestion", "knowledge_base"),
     )
 
     # --- Security / rate limiting ---

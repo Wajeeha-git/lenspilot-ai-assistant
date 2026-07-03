@@ -27,6 +27,8 @@ class ChatRequest(BaseModel):
 class Source(BaseModel):
     document_id: int
     document_title: str
+    category: str
+    audience: str
     source: str
     similarity: float
 
@@ -116,6 +118,8 @@ def chat(payload: ChatRequest, db: Session = Depends(get_db), _auth=Depends(veri
             Source(
                 document_id=c["document_id"],
                 document_title=c["document_title"],
+                category=c["category"],
+                audience=c["audience"],
                 source=c["source"],
                 similarity=c["similarity"],
             )
