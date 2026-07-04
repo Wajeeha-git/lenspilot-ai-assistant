@@ -83,8 +83,10 @@ Response `200 OK`:
   "sources": [
     {
       "document_id": 2,
-      "document_title": "Faq",
-      "source": "FAQ",
+      "document_title": "FAQ - Customer",
+      "category": "FAQ",
+      "audience": "customer",
+      "source": "LensPilot Knowledge Base v1",
       "similarity": 0.83
     }
   ],
@@ -105,9 +107,16 @@ Source fields:
 | Field | Type | Description |
 |---|---|---|
 | `document_id` | number | Database ID of the source document. |
-| `document_title` | string | Source document title. |
-| `source` | string | Source category such as `FAQ`, `Policy`, or `Product`. |
+| `document_title` | string | Source document title (from its frontmatter `title:`, or derived from the filename). |
+| `category` | string | Topic category, e.g. `FAQ`, `Workflow`, `Error Handling`, `Business Rules`. |
+| `audience` | string | Who the doc targets: `public`, `customer`, `shopkeeper`, or `admin`. Informational, not currently used to filter results. |
+| `source` | string | Provenance string, e.g. `LensPilot Knowledge Base v1`. |
 | `similarity` | number | Retrieval similarity score; higher is better. |
+
+**Note:** only documents marked public in their frontmatter (`public: true`,
+the default) are ever eligible for retrieval here - internal-only content
+(`public: false`) is hard-excluded before similarity search runs, not just
+filtered from the response.
 
 Error responses:
 

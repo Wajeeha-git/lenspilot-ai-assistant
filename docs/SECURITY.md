@@ -49,6 +49,22 @@ method, path, response status, and duration.
 The application access log does not log the user's message text. Chat content
 is stored in the `chat_messages` table for conversation history.
 
+## Knowledge Base Visibility
+
+Each ingested document has an `is_public` flag (from its frontmatter's
+`public:` field, default `true`). Retrieval (`app/services/retrieval.py`)
+hard-filters on `is_public = true` at the database query level -- a
+document marked `public: false` is never eligible to be returned to
+`/chat`, regardless of how similar it is to the question. This is the
+actual enforcement mechanism for keeping internal-only content out of
+customer-facing answers; it isn't just a label on the document.
+
+`category` and `audience` are also stored per document and returned in
+`/chat`'s `sources` for transparency, but are not currently used as a hard
+filter -- a shopkeeper-audience doc can still answer a customer's question
+about shopkeepers, for example. If stricter audience-based filtering is
+needed later, it's a query change in `retrieval.py`, not a re-ingestion.
+
 ## Secrets
 
 `OPENAI_API_KEY`, `DATABASE_URL`, and `API_KEY` are read from environment

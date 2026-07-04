@@ -31,7 +31,7 @@ Security notes live at [../docs/SECURITY.md](../docs/SECURITY.md).
 These two pieces are intentionally temporary until the Knowledge/Prompt owner
 replaces them with official LensPilot material:
 
-- `ingestion/sample_docs/` - placeholder company docs
-- `app/services/prompt.py` - placeholder system prompt and response rules
+- `ingestion/knowledge_base/` - real LensPilot knowledge base (12 topic docs with frontmatter metadata)
+- `app/services/prompt.py` - composes the real system prompt from `prompt_sources/` (see that folder's README note)
 
 Swapping either later does not require API or database schema changes.
