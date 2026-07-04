@@ -114,6 +114,7 @@ tests/
 - `knowledge/test-cases` 
 - `knowledge/prompt-tuning` 
 - `knowledge/frontend-support` 
+- `knowledge/final-review` 
 - `knowledge/final-documentation` 
 
 *(Note: These branches are pending merge into `main` via Pull Requests.)*
@@ -175,6 +176,11 @@ Tests/
 **🌿 knowledge/frontend-support**  
 docs/
   └── frontend-api-checklist.md                    (API contract summary for frontend team)
+
+**🌿 knowledge/final-review**  
+docs/
+  └── demo-faq.md                                  (curated FAQ for demo)
+
 
 **🌿 knowledge/final-documentation**
 docs/
