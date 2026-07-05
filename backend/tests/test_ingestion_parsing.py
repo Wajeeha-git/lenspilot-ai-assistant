@@ -1,6 +1,6 @@
 """
 Tests for the ingestion pipeline's metadata parsing and chunking logic.
-None of these need a live DB or OpenAI key -- they test pure functions.
+None of these need a live DB or Gemini key -- they test pure functions.
 """
 from ingestion.ingest import (
     parse_frontmatter,
