@@ -1,6 +1,8 @@
 """
 Security and error-handling checks that do not require a live DB or Gemini key.
 """
+from unittest.mock import patch
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -87,9 +89,13 @@ def test_rate_limit_disabled_when_zero(monkeypatch):
 
 
 def test_retrieval_failure_does_not_leak_internal_exception_text():
-    # No GEMINI_API_KEY is set in this test env, so retrieval will fail.
-    # The client should get a generic message, never the raw exception text.
-    response = client.post("/chat", json={"message": "hello"})
+    # Force retrieval to fail deterministically, regardless of whether this
+    # environment happens to have a real GEMINI_API_KEY/DB configured.
+    with patch(
+        "app.api.routes.retrieve_relevant_chunks",
+        side_effect=RuntimeError("GEMINI_API_KEY is not set. Add it to your .env file."),
+    ):
+        response = client.post("/chat", json={"message": "hello"})
 
     assert response.status_code == 503
     error = response.json()["error"]
