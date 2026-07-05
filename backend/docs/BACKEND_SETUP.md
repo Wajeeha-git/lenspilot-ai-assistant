@@ -4,7 +4,7 @@
 
 - Python 3.11+ recommended
 - PostgreSQL 14+ with pgvector, or Docker for the provided pgvector image
-- OpenAI API key for live ingestion and chat responses
+- Gemini API key for live ingestion and chat responses (free tier, no card required)
 
 ## 2. Install Dependencies
 
@@ -24,7 +24,7 @@ cp .env.example .env
 Set at minimum:
 
 - `DATABASE_URL`
-- `OPENAI_API_KEY`
+- `GEMINI_API_KEY`
 
 Leave `API_KEY` blank for local development, or set it to require either
 `x-api-key: <key>` or `Authorization: Bearer <key>` on `/chat` and `/ingest`.
@@ -137,7 +137,7 @@ pytest
 
 ## Notes
 
-- Embeddings and chat completions call the OpenAI API and cost money per token.
+- Embeddings and chat completions call the Gemini API. The free tier has no cost, but does have rate limits (see docs/SECURITY.md).
 - `RETRIEVAL_TOP_K` controls how many chunks are sent to the LLM per question.
 - `RATE_LIMIT_PER_MINUTE` controls per-client rate limiting for `/chat` and
   `/ingest`. The default is `30`; set it to `0` only for trusted local testing.

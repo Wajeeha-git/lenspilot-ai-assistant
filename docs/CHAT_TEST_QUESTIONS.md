@@ -1,6 +1,6 @@
 # /chat Test Questions - LensPilot Knowledge Base (v2)
 
-Run these against a live backend (real `OPENAI_API_KEY` + Postgres, after
+Run these against a live backend (real `GEMINI_API_KEY` + Postgres, after
 `alembic upgrade head` and `python ingestion/ingest.py`) to sanity-check
 retrieval and answer quality. Grouped as requested: FAQ, workflow, role,
 error-handling, and "must not do" cases first.
