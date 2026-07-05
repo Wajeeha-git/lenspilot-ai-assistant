@@ -1,5 +1,5 @@
 """
-Minimal smoke test that doesn't require a live DB or OpenAI key.
+Minimal smoke test that doesn't require a live DB or Gemini key.
 Run with: pytest
 """
 from fastapi.testclient import TestClient

@@ -1,5 +1,5 @@
 """
-Security and error-handling checks that do not require a live DB or OpenAI key.
+Security and error-handling checks that do not require a live DB or Gemini key.
 """
 import pytest
 from fastapi.testclient import TestClient
@@ -87,14 +87,14 @@ def test_rate_limit_disabled_when_zero(monkeypatch):
 
 
 def test_retrieval_failure_does_not_leak_internal_exception_text():
-    # No OPENAI_API_KEY is set in this test env, so retrieval will fail.
+    # No GEMINI_API_KEY is set in this test env, so retrieval will fail.
     # The client should get a generic message, never the raw exception text.
     response = client.post("/chat", json={"message": "hello"})
 
     assert response.status_code == 503
     error = response.json()["error"]
     assert error == "Knowledge lookup is temporarily unavailable. Please try again shortly."
-    assert "OPENAI_API_KEY" not in error
+    assert "GEMINI_API_KEY" not in error
     assert "Traceback" not in error
 
 

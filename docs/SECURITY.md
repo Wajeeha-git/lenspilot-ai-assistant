@@ -67,6 +67,6 @@ needed later, it's a query change in `retrieval.py`, not a re-ingestion.
 
 ## Secrets
 
-`OPENAI_API_KEY`, `DATABASE_URL`, and `API_KEY` are read from environment
+`GEMINI_API_KEY`, `DATABASE_URL`, and `API_KEY` are read from environment
 variables. `.env` is ignored by Git. Rotate keys immediately if they are ever
 committed or shared accidentally.

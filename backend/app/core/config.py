@@ -27,11 +27,18 @@ class Settings:
         "postgresql+psycopg2://postgres:postgres@localhost:5432/lenspilot_ai",
     )
 
-    # --- OpenAI ---
-    OPENAI_API_KEY: str | None = os.getenv("OPENAI_API_KEY")
-    EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
+    # --- Gemini (Google AI) ---
+    # Chosen for the demo: genuine free tier, no card required, works for
+    # both embeddings and chat. See app/services/embeddings.py and llm.py
+    # for provider-specific notes (esp. the 1-text-per-request limit on
+    # embeddings, and free-tier rate limits).
+    GEMINI_API_KEY: str | None = os.getenv("GEMINI_API_KEY")
+    EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "gemini-embedding-001")
+    # gemini-embedding-001 defaults to 3072 dims, but supports output_dimensionality
+    # to shrink it -- kept at 1536 to match the existing pgvector column and
+    # avoid a migration when switching providers.
     EMBEDDING_DIM: int = int(os.getenv("EMBEDDING_DIM", "1536"))
-    CHAT_MODEL: str = os.getenv("CHAT_MODEL", "gpt-4o-mini")
+    CHAT_MODEL: str = os.getenv("CHAT_MODEL", "gemini-2.5-flash")
 
     # --- RAG tuning ---
     CHUNK_SIZE_WORDS: int = int(os.getenv("CHUNK_SIZE_WORDS", "350"))
