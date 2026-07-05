@@ -1,4 +1,4 @@
-import time
+﻿import time
 import uuid
 import logging
 
@@ -96,7 +96,7 @@ def chat(payload: ChatRequest, db: Session = Depends(get_db), _auth=Depends(veri
         reply_text = call_llm(messages)
         logger.info("LLM responded in %.2fs", time.time() - t0)
     except LLMError as e:
-        raise HTTPException(status_code=502, detail=str(e))
+        raise HTTPException(status_code=e.status_code, detail=str(e))
     except Exception as e:
         logger.exception("Unexpected LLM failure")
         raise HTTPException(status_code=500, detail="Something went wrong generating a response.")
