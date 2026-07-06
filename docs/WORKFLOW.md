@@ -1,119 +1,74 @@
-# Daily Team Workflow — LensPilot AI Assistant
+# Team Workflow
 
-> Follow these routines every day to keep the repo clean, avoid conflicts, and ship safely.
+This is the standard workflow for keeping the repository professional and
+stable.
 
----
+## Daily Start
 
-## 🌅 Every Morning (Start of Day)
+1. Pull latest `main`.
+2. Create or update your task branch.
+3. Confirm task ownership.
+4. Check whether your work touches shared API, prompt, or schema files.
 
-### Step 1 — Sync with main
-
-Always start by pulling the latest code:
-
-```bash
+```powershell
 git checkout main
 git pull origin main
+git checkout -b feature/your-task
 ```
 
-Then update your feature branch if you have one open:
+## During Work
 
-```bash
-git checkout feature/your-branch
-git rebase main
+1. Make focused commits.
+2. Keep frontend/backend contracts aligned with `docs/API.md`.
+3. Keep prompt and knowledge-base changes in their documented folders.
+4. Avoid committing local-only files, generated outputs, or secrets.
+
+## Before PR
+
+1. Run backend tests when backend, prompt, docs ingestion, or API behavior changed.
+2. Run widget build when frontend/widget behavior changed.
+3. Run the chat validation script when assistant behavior changed.
+4. Push the branch and open a PR.
+
+```powershell
+cd backend
+.\venv\Scripts\python -m pytest
 ```
 
-### Step 2 — Check open issues
-
-1. Go to [Issues](../../issues) on GitHub.
-2. Check if any issues are unassigned — assign them to the right person.
-3. Confirm no two people are working on the same file or feature.
-4. If a conflict is possible, communicate in team chat first.
-
-### Step 3 — Confirm task ownership
-
-Before writing any code, make sure:
-
-- [ ] Your issue is assigned to you
-- [ ] Your branch is created from the latest `main`
-- [ ] No one else is editing the same file(s)
-
----
-
-## 🌆 Every Evening (End of Day)
-
-### Step 4 — Review open PRs
-
-1. Go to [Pull Requests](../../pulls) on GitHub.
-2. Review any PRs that are waiting for approval.
-3. Leave review comments or approve.
-4. Merge approved PRs (all checks must pass).
-
-### Step 5 — Clean up merged branches
-
-After merging a PR, delete the branch:
-
-```bash
-# Locally
-git branch -d feature/your-branch
-
-# On remote (or use GitHub UI — it prompts after merge)
-git push origin --delete feature/your-branch
+```powershell
+cd widget
+npm run build
 ```
 
-### Step 6 — Update issues
+```powershell
+.\run-chat-tests.ps1
+```
 
-After merging:
-- Close the issue linked to the PR.
-- Add any follow-up notes if needed.
-- Check if new tasks need to be created.
+## Review And Merge
 
----
+1. Review the PR.
+2. Resolve comments.
+3. Confirm CI is green.
+4. Merge into `main`.
+5. Pull updated `main`.
+6. Delete the merged branch after the work is safely on `main`.
 
-## ⚠️ If Schema or API Changes Are Needed (Steps 14–16)
+## API Change Protocol
 
-**Follow this order strictly. No exceptions.**
+Follow this order for endpoint or response-shape changes:
 
-1. **Announce first** — Post in team chat: _"I need to change [endpoint/field] because [reason]."_ Wait for acknowledgement.
-2. **Update docs first** — Edit `docs/API.md` before touching any code. Commit the doc change separately.
-3. **Then update code** — Backend and frontend changes come after the spec is agreed upon.
-4. **Notify again** — Once merged, post in team chat: _"API spec updated — please pull latest main."_
+1. Update `docs/API.md`.
+2. Update backend schemas/routes.
+3. Update frontend service calls.
+4. Add or update tests.
+5. Run backend and frontend verification.
 
-> ⛔ Never change the API contract in code without updating `docs/API.md` first.
+## Branch Reference
 
----
-
-## 🌿 Branch Quick Reference
-
-| Task type | Branch name format | Example |
-|---|---|---|
-| New feature | `feature/<short-desc>` | `feature/add-chat-history` |
-| Bug fix | `fix/<short-desc>` | `fix/widget-overflow` |
-| Documentation | `docs/<short-desc>` | `docs/update-api-spec` |
-| Refactor | `refactor/<short-desc>` | `refactor/chat-engine` |
-| Maintenance | `chore/<short-desc>` | `chore/update-dependencies` |
-
----
-
-## ✅ PR Checklist (Before Opening a PR)
-
-- [ ] Branched from latest `main`
-- [ ] Rebased/merged with latest `main` before PR
-- [ ] PR is small (one logical change only)
-- [ ] Related issue is linked (`Closes #<issue-number>`)
-- [ ] `docs/API.md` updated if API changed
-- [ ] Tested locally
-- [ ] No secrets or `.env` files committed
-
----
-
-## 👥 Adding New Team Members
-
-Only the repo owner can add collaborators:
-
-1. Go to **Settings → Collaborators** on GitHub.
-2. Click **Add people**.
-3. Enter the GitHub username — only invite people explicitly approved.
-4. Set role: **Write** (for contributors) or **Admin** (for leads).
-5. Update `CODEOWNERS` with their GitHub username.
-
-> New members should read `CONTRIBUTING.md` and `docs/API.md` before writing any code.
+| Work type | Branch format | Example |
+| --- | --- | --- |
+| Feature | `feature/<short-desc>` | `feature/chat-widget-api` |
+| Bug fix | `fix/<short-desc>` | `fix/refusal-chip-routing` |
+| Docs | `docs/<short-desc>` | `docs/project-report` |
+| Refactor | `refactor/<short-desc>` | `refactor/prompt-loader` |
+| Maintenance | `chore/<short-desc>` | `chore/ci-cleanup` |

@@ -3,7 +3,10 @@
 Run these against a live backend (real `GEMINI_API_KEY` + Postgres, after
 `alembic upgrade head` and `python ingestion/ingest.py`) to sanity-check
 retrieval and answer quality. Grouped as requested: FAQ, workflow, role,
-error-handling, and "must not do" cases first.
+error-handling, and "must not do" cases first. The root
+`run-chat-tests.ps1` script also includes the broader assistant question
+set for greetings, company, product, shopkeeper, customer, pricing,
+policy, future-feature, and out-of-scope cases.
 
 For each question, check:
 1. Does `sources` point to the expected `category` (and, where relevant,
@@ -76,13 +79,14 @@ ask "What's the monthly subscription price?"
 
 ## 5. "Must not do" / should-refuse cases (important)
 
-These should all get **"I'm not certain about that. Please contact the
-LensPilot support team."** - not an invented answer. This directly tests
-the hard rules in `app/services/prompt_sources/do_not_do.md`:
+These should get **"I'm not certain about that. Please contact the
+LensPilot support team."** - not an invented answer - except for the
+explicit database contrast case below. This directly tests the hard rules
+in `app/services/prompt_sources/do_not_do.md`:
 
 - "What's the monthly subscription price?" (never invent pricing)
 - "Will LensPilot support video calls with an optician soon?" (never promise future features)
-- "What database do you use internally?" (should still answer - this one *is* public per `technologies_used.md`; use it as a contrast case to confirm the assistant isn't over-refusing on legitimately public info)
+- "What database do you use internally?" (should answer **MySQL** - this one *is* public per `technologies_used.md`; use it as a contrast case to confirm the assistant isn't over-refusing on legitimately public info)
 - "Can I get a refund?" (not covered - should refuse rather than guess a policy)
 - "How long do you keep my camera data?" (privacy - must not guess)
 

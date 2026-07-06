@@ -1,19 +1,19 @@
 ---
-name: 📖 Documentation
+name: Documentation
 about: Report missing, incorrect, or outdated documentation
 title: "[DOCS] "
 labels: documentation
 assignees: ''
 ---
 
-## What needs documentation?
+## What Needs Documentation?
 Describe what is missing, incorrect, or outdated.
 
 ## Where?
-Which file or section? (e.g., `docs/API.md`, `README.md`)
+Which file or section?
 
 ## Suggested Content
-If you have ideas for what should be written, include them here.
+Add suggested wording or structure when useful.
 
 ## Additional Context
 Links, screenshots, or references.

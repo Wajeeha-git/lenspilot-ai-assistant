@@ -64,7 +64,7 @@ Request body:
 ```json
 {
   "session_id": "optional-existing-session-id",
-  "message": "Does LensPilot have a free trial?"
+  "message": "What is LensPilot?"
 }
 ```
 
@@ -79,13 +79,13 @@ Response `200 OK`:
 
 ```json
 {
-  "reply": "LensPilot offers a 14-day free trial...",
+  "reply": "LensPilot is an AI-powered browser-based platform that lets customers virtually try on contact lenses using real-time iris segmentation and augmented reality.",
   "sources": [
     {
       "document_id": 2,
-      "document_title": "FAQ - Customer",
-      "category": "FAQ",
-      "audience": "customer",
+      "document_title": "Product Overview",
+      "category": "Product",
+      "audience": "public",
       "source": "LensPilot Knowledge Base v1",
       "similarity": 0.83
     }
@@ -98,8 +98,8 @@ Fields:
 
 | Field | Type | Description |
 |---|---|---|
-| `reply` | string | Assistant answer generated from retrieved company context. |
-| `sources` | array | Document chunks used to ground the response. |
+| `reply` | string | Assistant answer generated from approved LensPilot knowledge. |
+| `sources` | array | Documents or chunks used to ground the response. |
 | `session_id` | string | Session ID to reuse for follow-up messages. |
 
 Source fields:
@@ -128,6 +128,11 @@ Error responses:
 | `502` | LLM provider failed. |
 | `503` | Knowledge retrieval or database lookup failed. |
 | `500` | Unexpected server error. |
+
+The backend has deterministic local answers for the approved FAQ/workflow/role
+questions and hard refusal cases, so those responses can still succeed when
+Gemini is temporarily rate-limited. Other LensPilot questions continue through
+retrieval and the configured chat model.
 
 Error body:
 

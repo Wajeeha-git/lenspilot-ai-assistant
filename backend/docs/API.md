@@ -35,7 +35,7 @@ Request body:
 ```json
 {
   "session_id": "optional-existing-session-id",
-  "message": "How much does LensPilot cost?"
+  "message": "What is LensPilot?"
 }
 ```
 
@@ -43,12 +43,14 @@ Response `200 OK`:
 
 ```json
 {
-  "reply": "LensPilot offers a 14-day free trial...",
+  "reply": "LensPilot is an AI-powered browser-based platform that lets customers virtually try on contact lenses using real-time iris segmentation and augmented reality.",
   "sources": [
     {
       "document_id": 2,
-      "document_title": "Faq",
-      "source": "FAQ",
+      "document_title": "Product Overview",
+      "category": "Product",
+      "audience": "public",
+      "source": "LensPilot Knowledge Base v1",
       "similarity": 0.83
     }
   ],
@@ -64,6 +66,11 @@ Expected errors:
 - `502` - LLM provider failure
 - `503` - retrieval or database lookup failure
 - `500` - unexpected server error
+
+Known FAQ/workflow/role questions and hard refusal cases are answered from
+approved local LensPilot knowledge before the backend calls Gemini. This keeps
+patch validation stable when Gemini is temporarily rate-limited; other
+LensPilot questions still use retrieval plus the configured chat model.
 
 Every response includes `x-request-id` for support/debugging.
 

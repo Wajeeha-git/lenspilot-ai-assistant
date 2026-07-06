@@ -80,6 +80,7 @@ ehthumbs.db
 # =====================
 logs/
 *.log
+out-chat-tests.txt
 
 # =====================
 # Data (large files)

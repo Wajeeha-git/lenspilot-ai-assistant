@@ -1,5 +1,5 @@
 ---
-name: ✨ Feature Request
+name: Feature Request
 about: Suggest a new feature or improvement
 title: "[FEATURE] "
 labels: enhancement
@@ -9,14 +9,14 @@ assignees: ''
 ## Summary
 A clear, one-sentence summary of the feature.
 
-## Problem / Motivation
-What problem does this solve? Why is it needed?
+## Problem Or Motivation
+What problem does this solve?
 
 ## Proposed Solution
-Describe the feature or approach you have in mind.
+Describe the feature or approach.
 
 ## Alternatives Considered
-Any alternative approaches you thought about.
+List any alternative approaches.
 
 ## Acceptance Criteria
 - [ ] Criterion 1
@@ -24,4 +24,4 @@ Any alternative approaches you thought about.
 - [ ] Criterion 3
 
 ## Additional Context
-Mockups, links, or any other relevant information.
+Mockups, links, or other useful information.

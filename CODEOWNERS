@@ -1,26 +1,19 @@
-# =============================================
-# CODEOWNERS — LensPilot AI Assistant
-# =============================================
-# Each line defines a file pattern and the
-# GitHub user(s) or team(s) responsible for
-# reviewing changes to those files.
+# Code owners for LensPilot AI Assistant.
 #
-# Owners are automatically requested for review
-# when a PR touches their files.
-# =============================================
+# GitHub requests these owners for review when a PR touches matching files.
 
-# --- Backend ---
+# Backend
 /backend/                       @Wajeeha-git
 
-# --- Frontend (Widget & Demo) ---
+# Frontend widget and demo
 /widget/                        @nimra-Ashfaq
 /demo-site/                     @nimra-Ashfaq
 
-# --- Documentation & Knowledge ---
+# Documentation and knowledge base
 /docs/                          @NidaIqbal01
 /data/                          @NidaIqbal01
 
-# --- Root config (repo owner only) ---
+# Repository-level configuration
 README.md                       @Wajeeha-git
 CONTRIBUTING.md                 @Wajeeha-git
 CODEOWNERS                      @Wajeeha-git

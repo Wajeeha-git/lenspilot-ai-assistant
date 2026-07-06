@@ -1,5 +1,5 @@
 ---
-name: ⚙️ Backend Task
+name: Backend Task
 about: Task related to the backend API, chat engine, or ingestion pipeline
 title: "[BACKEND] "
 labels: backend
@@ -9,11 +9,11 @@ assignees: ''
 ## Summary
 A clear description of the backend task.
 
-## Affected Endpoint(s)
+## Affected Endpoints
 - `GET /health`
 - `POST /chat`
 - `POST /ingest`
-- Other: 
+- Other:
 
 ## Requirements
 - [ ] Requirement 1
@@ -23,4 +23,4 @@ A clear description of the backend task.
 Implementation details, dependencies, or constraints.
 
 ## Related Issues
-Link any related issues (e.g., `#12`).
+Link any related issues.

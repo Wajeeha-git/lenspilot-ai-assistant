@@ -1,19 +1,20 @@
-# LensPilot Brain API
+# LensPilot Backend
 
-FastAPI RAG backend for the LensPilot AI Assistant. It receives questions
-from the chatbot widget, retrieves relevant LensPilot document chunks from
-Postgres/pgvector, calls the configured LLM, and returns an answer with
-sources.
+FastAPI backend for the LensPilot AI Assistant. It receives widget questions,
+retrieves relevant LensPilot document chunks from PostgreSQL/pgvector, builds a
+grounded prompt, calls Gemini when needed, and returns an answer with sources.
 
-## What Is Included
+## Included
 
 - FastAPI app with `/health`, `/chat`, and `/ingest`
-- Versioned aliases under `/api/v1`
+- Versioned API routes under `/api/v1`
 - PostgreSQL schema managed by Alembic
-- pgvector-backed document chunk search
-- File ingestion pipeline for `.md`, `.txt`, `.html`, and `.pdf`
-- Placeholder LensPilot docs for local testing
-- GitHub CI support for tests and migrations
+- pgvector-backed document retrieval
+- Markdown/HTML/TXT/PDF ingestion pipeline
+- LensPilot knowledge-base documents with metadata
+- Prompt source files for identity, tone, and refusal rules
+- Deterministic local fallback for approved FAQ/demo/refusal questions
+- Tests for health, security, retry behavior, ingestion, and local assistant logic
 
 ## Local Setup
 
@@ -26,12 +27,11 @@ Backend-local notes are in [docs/API.md](docs/API.md).
 
 Security notes live at [../docs/SECURITY.md](../docs/SECURITY.md).
 
-## Placeholder Content
+## Runtime Flow
 
-These two pieces are intentionally temporary until the Knowledge/Prompt owner
-replaces them with official LensPilot material:
-
-- `ingestion/knowledge_base/` - real LensPilot knowledge base (12 topic docs with frontmatter metadata)
-- `app/services/prompt.py` - composes the real system prompt from `prompt_sources/` (see that folder's README note)
-
-Swapping either later does not require API or database schema changes.
+1. The widget posts a message to `/api/v1/chat`.
+2. The backend creates or reuses a chat session.
+3. Known LensPilot FAQ/workflow/refusal cases are answered locally.
+4. For other in-scope questions, retrieval finds relevant public document chunks.
+5. Prompt rules and retrieved context are sent to Gemini.
+6. The answer and sources are returned to the widget.
