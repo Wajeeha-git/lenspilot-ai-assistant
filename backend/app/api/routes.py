@@ -12,6 +12,7 @@ from app.models.chat import ChatSession, ChatMessage
 from app.services.retrieval import retrieve_relevant_chunks
 from app.services.prompt import build_messages
 from app.services.llm import call_llm, LLMError
+from app.services.local_assistant import answer_from_local_knowledge, answer_from_retrieved_chunks
 
 logger = logging.getLogger("lenspilot")
 router = APIRouter()
@@ -77,29 +78,44 @@ def chat(payload: ChatRequest, db: Session = Depends(get_db), _auth=Depends(veri
         db.rollback()
         logger.exception("Could not persist chat session %s", session_id)
 
-    # 1. Retrieve relevant chunks
-    try:
-        t0 = time.time()
-        chunks = retrieve_relevant_chunks(db, payload.message)
-        logger.info("Retrieved %d chunks in %.2fs", len(chunks), time.time() - t0)
-    except Exception:
-        logger.exception("Retrieval failed")
-        raise HTTPException(
-            status_code=503,
-            detail="Knowledge lookup is temporarily unavailable. Please try again shortly.",
-        )
+    local_result = answer_from_local_knowledge(payload.message, db)
+    if local_result is not None:
+        reply_text = local_result.reply
+        chunks = local_result.sources
+        logger.info("Answered from local LensPilot knowledge in %.2fs", time.time() - start)
+    else:
+        chunks = []
 
-    # 2. Build prompt + call LLM
-    try:
-        messages = build_messages(payload.message, chunks)
-        t0 = time.time()
-        reply_text = call_llm(messages)
-        logger.info("LLM responded in %.2fs", time.time() - t0)
-    except LLMError as e:
-        raise HTTPException(status_code=e.status_code, detail=str(e))
-    except Exception as e:
-        logger.exception("Unexpected LLM failure")
-        raise HTTPException(status_code=500, detail="Something went wrong generating a response.")
+    # 1. Retrieve relevant chunks
+    if local_result is None:
+        try:
+            t0 = time.time()
+            chunks = retrieve_relevant_chunks(db, payload.message)
+            logger.info("Retrieved %d chunks in %.2fs", len(chunks), time.time() - t0)
+        except Exception:
+            logger.exception("Retrieval failed")
+            raise HTTPException(
+                status_code=503,
+                detail="Knowledge lookup is temporarily unavailable. Please try again shortly.",
+            )
+
+        # 2. Build prompt + call LLM
+        try:
+            messages = build_messages(payload.message, chunks)
+            t0 = time.time()
+            reply_text = call_llm(messages)
+            logger.info("LLM responded in %.2fs", time.time() - t0)
+        except LLMError as e:
+            fallback = answer_from_retrieved_chunks(payload.message, chunks)
+            if fallback is not None:
+                reply_text = fallback.reply
+                chunks = fallback.sources
+                logger.warning("LLM failed (%s); returned grounded local fallback", e.status_code)
+            else:
+                raise HTTPException(status_code=e.status_code, detail=str(e))
+        except Exception:
+            logger.exception("Unexpected LLM failure")
+            raise HTTPException(status_code=500, detail="Something went wrong generating a response.")
 
     # 3. Persist messages (best effort)
     try:

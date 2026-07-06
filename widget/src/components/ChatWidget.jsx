@@ -44,6 +44,19 @@ export default function ChatWidget() {
     if (lastUser) send(lastUser.text);
   };
 
+  const sourceLabel = (source) => {
+    if (!source) return "Source";
+    if (typeof source === "string") return source;
+    const title = source.document_title || source.category || "Source";
+    const category = source.category ? ` ${source.category}` : "";
+    return `${title}${category}`;
+  };
+
+  const sourceKey = (source, index) => {
+    if (typeof source === "string") return `${source}-${index}`;
+    return `${source.document_id || "doc"}-${source.category || "cat"}-${index}`;
+  };
+
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end font-body">
       {open && (
@@ -87,12 +100,12 @@ export default function ChatWidget() {
                   <p className="m-0">{m.text}</p>
                   {m.sources && m.sources.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1.5">
-                      {m.sources.map((s) => (
+                      {m.sources.map((s, j) => (
                         <span
-                          key={s}
+                          key={sourceKey(s, `${i}-${j}`)}
                           className="inline-flex items-center gap-1 text-[10.5px] px-2 py-0.5 rounded-full bg-black/25 border border-hair text-teal-300"
                         >
-                          🏷 {s}
+                          🏷 {sourceLabel(s)}
                         </span>
                       ))}
                     </div>

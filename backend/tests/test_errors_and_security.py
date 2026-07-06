@@ -95,7 +95,7 @@ def test_retrieval_failure_does_not_leak_internal_exception_text():
         "app.api.routes.retrieve_relevant_chunks",
         side_effect=RuntimeError("GEMINI_API_KEY is not set. Add it to your .env file."),
     ):
-        response = client.post("/chat", json={"message": "hello"})
+        response = client.post("/chat", json={"message": "Explain LensPilot deployment architecture"})
 
     assert response.status_code == 503
     error = response.json()["error"]

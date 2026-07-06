@@ -52,6 +52,8 @@ npm run preview    # preview the production build locally
 - Source pills under assistant replies
 - Fully responsive — one set of Tailwind classes with breakpoint
   variants (`sm:`, `lg:`), no separate mobile version to maintain
+- Real backend replies from `/api/v1/chat` by default, with mock replies
+  still available by setting `VITE_USE_MOCK=true`
 - Mock replies via keyword/overlap matching in `src/mock/knowledgeBase.js`,
   with an honest "I don't know" fallback when nothing matches (mirrors
   the real assistant's "say when unsure" rule)
@@ -101,7 +103,8 @@ environment:
    ```
    VITE_API_BASE_URL=https://api.lenspilot.example.com
    ```
-3. Restart `npm run dev` (Vite only reads `.env` files at startup).
+3. Optional: set `VITE_USE_MOCK=true` if you want the offline demo mode.
+4. Restart `npm run dev` (Vite only reads `.env` files at startup).
 
 For local development against a backend on a different port, you can
 alternatively use the commented-out proxy block in `vite.config.js` to
@@ -114,8 +117,8 @@ Everything backend-related lives in **`src/services/chatService.js`** —
 that's the only file that should need to change:
 
 1. Confirm the request/response shape against `docs/API.md`.
-2. Set `CONFIG.USE_MOCK = false` in that file.
-3. Set `VITE_API_BASE_URL` as above.
+2. Set `VITE_API_BASE_URL` as above.
+3. Keep `VITE_USE_MOCK=false` for the connected frontend.
 
 The real call is already written (commented out) inside `sendMessage()`:
 

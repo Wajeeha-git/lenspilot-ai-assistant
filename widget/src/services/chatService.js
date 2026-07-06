@@ -23,13 +23,13 @@
 import { ASSISTANT_IDENTITY, KNOWLEDGE_BASE } from "../mock/knowledgeBase.js";
 
 export const CONFIG = {
-  USE_MOCK: true,
+  USE_MOCK: import.meta.env.VITE_USE_MOCK === "true",
   // Reads from .env / .env.local — see .env.example.
-  // Falls back to a relative "/api" path if not set.
-  API_BASE_URL: import.meta.env.VITE_API_BASE_URL || "/api",
+  // Defaults to the local FastAPI backend on the documented versioned route.
+  API_BASE_URL: import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000/api/v1",
 };
 
-const sessionId =
+let sessionId =
   "session-" + Math.random().toString(36).slice(2, 10) + "-" + Date.now();
 
 function mockMatch(message) {
@@ -46,14 +46,16 @@ function mockMatch(message) {
 }
 
 export const ChatService = {
-  sessionId,
+  get sessionId() {
+    return sessionId;
+  },
 
   async sendMessage(message) {
     if (CONFIG.USE_MOCK) {
       await new Promise((r) => setTimeout(r, 700 + Math.random() * 500)); // fake latency
       const hit = mockMatch(message);
-      if (hit) return { reply: hit.answer, sources: [hit.source], error: null };
-      return { reply: ASSISTANT_IDENTITY.fallback, sources: [], error: null };
+      if (hit) return { reply: hit.answer, sources: [hit.source], error: null, session_id: sessionId };
+      return { reply: ASSISTANT_IDENTITY.fallback, sources: [], error: null, session_id: sessionId };
     }
 
     // ---- Real backend call ----
@@ -61,18 +63,29 @@ export const ChatService = {
       const res = await fetch(`${CONFIG.API_BASE_URL}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, session_id: ChatService.sessionId }),
+        body: JSON.stringify({ message, session_id: sessionId }),
       });
 
       if (!res.ok) {
-        return { reply: null, sources: [], error: "Something went wrong. Please try again." };
+        let errorMessage = "Something went wrong. Please try again.";
+        try {
+          const payload = await res.json();
+          if (payload?.error) errorMessage = payload.error;
+        } catch {
+          // Keep the generic fallback if the server did not return JSON.
+        }
+        return { reply: null, sources: [], error: errorMessage };
       }
 
       const data = await res.json();
+      if (data?.session_id) {
+        sessionId = data.session_id;
+      }
       return {
         reply: data.reply,
         sources: data.sources || [],
         error: data.error || null,
+        session_id: data.session_id || sessionId,
       };
     } catch (err) {
       return { reply: null, sources: [], error: "Couldn't reach the assistant. Please try again." };
