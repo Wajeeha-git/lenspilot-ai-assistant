@@ -253,6 +253,9 @@ def _classify(question: str) -> LocalAnswer | None:
     if "subscription" in text and _has_any(text, ("expired", "expires")):
         return LocalAnswer("An expired subscription pauses a shopkeeper's access to LensPilot. Contact LensPilot support to renew.", category="Error Handling", document_title="Error Handling")
 
+    if _has_any(text, ("what is this platform about", "what is this platform", "what is the platform about")):
+        return LocalAnswer("LensPilot is an AI-powered browser-based platform that lets customers virtually try on contact lenses using real-time iris segmentation and augmented reality.", category="Product", document_title="Product Overview")
+
     if ("what is lenspilot" in text or "what does lenspilot do" in text) and "mission" not in text:
         return LocalAnswer("LensPilot is an AI-powered browser-based platform that lets customers virtually try on contact lenses using real-time iris segmentation and augmented reality.", category="Product", document_title="Product Overview")
 
@@ -271,7 +274,7 @@ def _classify(question: str) -> LocalAnswer | None:
     if _has_any(text, ("create an account", "need to log in", "need an account", "require an account")):
         return LocalAnswer("Customers do not need an account. Shopkeepers register an account to use LensPilot.", category="FAQ", document_title="FAQ - General")
 
-    if _has_any(text, ("how does lenspilot work", "simple terms")):
+    if _has_any(text, ("how does it work", "how it works", "how does lenspilot work", "simple terms")):
         return LocalAnswer("A customer scans a shopkeeper's QR code, opens LensPilot in the browser, allows camera access, and sees contact lens colors overlaid on their eyes in real time.", category="Product", document_title="Product Overview")
 
     if _has_any(text, ("virtual try on feature do", "virtual tryon feature do")):

@@ -34,3 +34,19 @@ def test_out_of_scope_question_stays_in_scope():
     assert result is not None
     assert result.reply == OUT_OF_SCOPE_REPLY
     assert result.sources == []
+
+
+def test_generic_widget_platform_chip_maps_to_lenspilot():
+    result = answer_from_local_knowledge("What is this platform about?")
+
+    assert result is not None
+    assert "AI-powered" in result.reply
+    assert result.reply != OUT_OF_SCOPE_REPLY
+
+
+def test_generic_widget_workflow_chip_maps_to_lenspilot():
+    result = answer_from_local_knowledge("How does it work?")
+
+    assert result is not None
+    assert "QR code" in result.reply
+    assert result.reply != OUT_OF_SCOPE_REPLY

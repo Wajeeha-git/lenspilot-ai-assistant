@@ -14,9 +14,9 @@ export const ASSISTANT_IDENTITY = {
 
 // Quick-reply chips shown under the greeting.
 export const SUGGESTED_QUESTIONS = [
-  "What is this platform about?",
-  "How does it work?",
-  "Is it free to try?",
+  "What is LensPilot?",
+  "How does LensPilot work?",
+  "Do I need to install an app?",
 ];
 
 // Mock knowledge base — keyword-matched to fake a real RAG answer
