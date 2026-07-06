@@ -1,16 +1,20 @@
-# Frontend Integration Checklist (Day 5 Review)
+# Frontend Integration Checklist
 
-Reviewed the backend's API.md contract. Summary for frontend team:
+Reviewed the backend API contract. Summary for the frontend team:
 
-## What the API provides:
-- `reply` — the assistant's answer text
-- `sources` — list of documents used to generate the answer (title, category, similarity score)
-- `session_id` — must be saved and reused for follow-up messages in the same conversation
-- `error` — returned as `{ "error": "message" }` with HTTP status codes (401, 422, 429, 500, 502, 503)
+## What The API Provides
 
-## What frontend needs to handle on its own:
-- Loading state (show "typing..." while waiting for the API response)
-- Displaying a user-friendly message when an `error` is received
-- Storing and sending `session_id` with follow-up messages
+- `reply` - the assistant answer text.
+- `sources` - documents used to generate the answer.
+- `session_id` - saved and reused for follow-up messages in the same conversation.
+- `error` - returned as `{ "error": "message" }` with HTTP status codes.
 
-## Status: ✅ API contract is stable and sufficient for the widget.
+## What The Frontend Handles
+
+- Loading state while waiting for the API response.
+- User-friendly message when an `error` is received.
+- Storing and sending `session_id` with follow-up messages.
+
+## Status
+
+The API contract is stable and sufficient for the widget.

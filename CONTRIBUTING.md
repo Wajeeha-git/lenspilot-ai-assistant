@@ -1,50 +1,41 @@
-# Contributing to LensPilot AI Assistant
+# Contributing
 
-Thank you for contributing! Please follow these rules to keep the codebase clean, safe, and easy to work with.
+Use this workflow to keep the LensPilot AI Assistant repository clean,
+reviewable, and safe for team collaboration.
 
----
+## Branch Rules
 
-## 🌿 Branch Rules
+1. Keep `main` stable and merge-ready.
+2. Create one branch per task.
+3. Branch from the latest `main`.
+4. Use clear branch prefixes:
+   - `feature/<short-description>`
+   - `fix/<short-description>`
+   - `docs/<short-description>`
+   - `refactor/<short-description>`
+   - `chore/<short-description>`
 
-1. **One branch per task.** Every issue, bug fix, or feature gets its own branch.
-2. **Branch naming convention:**
-   - `feature/<short-description>` — for new features
-   - `fix/<short-description>` — for bug fixes
-   - `docs/<short-description>` — for documentation changes
-   - `refactor/<short-description>` — for code refactoring
-   - `chore/<short-description>` — for maintenance tasks
-3. **Always branch from the latest `main`.**
-   ```bash
-   git checkout main
-   git pull origin main
-   git checkout -b feature/my-feature
-   ```
-4. **Update your branch before opening a PR:**
-   ```bash
-   git checkout main
-   git pull origin main
-   git checkout feature/my-feature
-   git rebase main
-   ```
+Example:
 
----
+```powershell
+git checkout main
+git pull origin main
+git checkout -b feature/chat-widget-api
+```
 
-## 🔀 Pull Request Rules
+## Pull Request Rules
 
-1. **No direct commits to `main`.** All changes go through Pull Requests.
-2. **Keep PRs small.** One logical change per PR. If a PR is too large, split it.
-3. **Every PR needs at least 1 review approval** before merging.
-4. **PR title format:** `[area] Short description`
-   - Examples: `[backend] Add /chat endpoint`, `[widget] Fix message overflow`, `[docs] Update API spec`
-5. **Include a description** explaining what changed and why.
-6. **Link the related issue** in the PR description (e.g., `Closes #12`).
-7. **All status checks must pass** before merging.
+1. Do not push directly to `main`.
+2. Keep each PR focused on one logical change.
+3. Link the related issue when one exists.
+4. Explain what changed, why it changed, and how it was tested.
+5. Update `docs/API.md` before changing backend/frontend API contracts.
+6. Wait for review before merging.
+7. Merge only when tests pass.
 
----
+## Shared Files
 
-## 📁 Shared Files — Ask Before Changing
-
-The following files affect the entire team. **Ask in the team chat before modifying them:**
+Ask the team before changing shared repository files:
 
 - `README.md`
 - `.env.example`
@@ -52,34 +43,35 @@ The following files affect the entire team. **Ask in the team chat before modify
 - `CONTRIBUTING.md`
 - `CODEOWNERS`
 - `docs/API.md`
-- Any CI/CD configuration files
+- `.github/workflows/*`
 
----
+## Test Checklist
 
-## 🐛 Issue Guidelines
+Before opening or merging a PR, run the relevant checks:
 
-- Use the issue templates provided (bug, feature, documentation, backend, frontend, knowledge).
-- Assign yourself to the issue before starting work.
-- Add appropriate labels.
-- Reference the issue number in your branch name and PR.
+```powershell
+cd backend
+.\venv\Scripts\python -m pytest
+```
 
----
+```powershell
+cd widget
+npm run build
+```
 
-## ✅ Before You Submit a PR
+For the live assistant validation:
 
-- [ ] My code follows the project style.
-- [ ] I've tested my changes locally.
-- [ ] I've updated my branch with the latest `main`.
-- [ ] I've linked the related issue.
-- [ ] My PR is small and focused on one change.
-- [ ] I haven't modified shared files without team approval.
+```powershell
+.\run-chat-tests.ps1
+```
 
----
+## Do Not Commit
 
-## 🚫 What NOT to Do
+Keep these out of PRs and `main`:
 
-- ❌ Push directly to `main`
-- ❌ Force push to shared branches
-- ❌ Open a PR without testing locally
-- ❌ Change the API contract without updating `docs/API.md` first
-- ❌ Modify multiple unrelated things in one PR
+- Secrets and real `.env` files
+- Generated logs and test-output files
+- Local troubleshooting scripts
+- Half-finished experiments
+- Unreviewed API-contract changes
+- Build artifacts such as `dist/` and `node_modules/`

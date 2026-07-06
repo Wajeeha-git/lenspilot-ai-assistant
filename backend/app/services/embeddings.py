@@ -3,10 +3,9 @@ Wraps the embedding model so the rest of the app never talks to Gemini
 directly. Swap this file out if you switch embedding providers later.
 
 Provider notes (Gemini / gemini-embedding-001):
-- Unlike OpenAI's embeddings endpoint, Gemini only accepts ONE text per
-  request (no batch input) as of this model's current API. embed_texts()
-  therefore loops -- fine for this project's small corpus (~80 chunks),
-  but worth knowing if the knowledge base grows much larger.
+- The configured embedding model accepts one text per request, so
+  embed_texts() loops -- fine for this project's small corpus, but worth
+  knowing if the knowledge base grows much larger.
 - Uses task_type to distinguish indexing (embed_texts, called only during
   ingestion) from querying (embed_text, called only for the live user
   question in retrieval.py) -- this is Gemini's recommended way to get

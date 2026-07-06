@@ -1,4 +1,4 @@
-name: Backend CI
+name: CI
 
 on:
   pull_request:
@@ -56,3 +56,26 @@ jobs:
       - name: Run tests
         working-directory: backend
         run: python -m pytest
+
+  widget:
+    name: Widget build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: widget/package-lock.json
+
+      - name: Install dependencies
+        working-directory: widget
+        run: npm ci
+
+      - name: Build widget
+        working-directory: widget
+        run: npm run build
