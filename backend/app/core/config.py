@@ -22,10 +22,14 @@ class Settings:
     ]
 
     # --- Database ---
-    DATABASE_URL: str = os.getenv(
+    # Ensure URL is SQLAlchemy compatible (Render uses postgres:// but SQLAlchemy requires postgresql://)
+    _db_url = os.getenv(
         "DATABASE_URL",
         "postgresql+psycopg2://postgres:postgres@localhost:5432/lenspilot_ai",
     )
+    if _db_url.startswith("postgres://"):
+        _db_url = _db_url.replace("postgres://", "postgresql://", 1)
+    DATABASE_URL: str = _db_url
 
     # --- Gemini (Google AI) ---
     # Chosen for the demo: genuine free tier, no card required, works for
