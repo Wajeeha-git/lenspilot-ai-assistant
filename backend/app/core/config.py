@@ -73,10 +73,13 @@ def validate_settings_or_warn():
     problems = []
     if settings.CORS_ORIGINS == ["*"]:
         problems.append("CORS_ORIGINS is '*'")
-    if not settings.API_KEY:
-        problems.append("API_KEY is not set")
     if is_prod and "postgres:postgres@localhost" in settings.DATABASE_URL:
         problems.append("DATABASE_URL still looks like the local default")
+
+    # API_KEY is optional in production to allow public chat widgets to function.
+    # Print a warning instead of raising a fatal exception.
+    if not settings.API_KEY:
+        logger.warning("[security warning] API_KEY is not set. Anyone can query the API endpoints.")
 
     if problems and is_prod:
         raise RuntimeError(

@@ -60,9 +60,15 @@ export const ChatService = {
 
     // ---- Real backend call ----
     try {
+      const headers = { "Content-Type": "application/json" };
+      const apiKey = import.meta.env.VITE_API_KEY;
+      if (apiKey) {
+        headers["x-api-key"] = apiKey;
+      }
+
       const res = await fetch(`${CONFIG.API_BASE_URL}/chat`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ message, session_id: sessionId }),
       });
 
