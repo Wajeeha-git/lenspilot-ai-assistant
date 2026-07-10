@@ -22,3 +22,5 @@ databases:
   - name: lenspilot-db
     plan: free
     postgresMajorVersion: 15
+    extensions:
+      - pgvector
