@@ -19,9 +19,23 @@ services:
       - key: API_KEY
         sync: false
       - key: CORS_ORIGINS
-        value: https://lenspilot-backend.onrender.com
+        value: https://lenspilot-backend.onrender.com,https://lenspilot-frontend.onrender.com
       - key: RUN_INGEST_ON_STARTUP
         value: true
+
+  - type: web
+    name: lenspilot-frontend
+    runtime: static
+    rootDir: widget
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: VITE_API_BASE_URL
+        value: https://lenspilot-backend.onrender.com/api/v1
+      - key: VITE_USE_MOCK
+        value: "false"
 
 databases:
   - name: lenspilot-db

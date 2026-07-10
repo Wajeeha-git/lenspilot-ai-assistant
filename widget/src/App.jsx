@@ -113,7 +113,7 @@ export default function App() {
             <LogoBadge className="w-5 h-5" />
             <span>LensPilot — frontend widget demo</span>
           </div>
-          <span>Chat widget is fully functional (mock data). Rest of page is view-only.</span>
+          <span>Chat widget is connected to the live LensPilot backend.</span>
         </div>
       </footer>
 
