@@ -3,6 +3,8 @@ services:
     name: lenspilot-backend
     env: docker
     dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    rootDir: backend
     plan: free
     envVars:
       - key: ENV
@@ -16,7 +18,7 @@ services:
       - key: API_KEY
         sync: false
       - key: CORS_ORIGINS
-        value: '*'
+        value: https://lenspilot-backend.onrender.com
 
 databases:
   - name: lenspilot-db
