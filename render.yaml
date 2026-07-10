@@ -6,6 +6,7 @@ services:
     dockerfilePath: Dockerfile
     dockerContext: .
     plan: free
+    healthCheckPath: /api/v1/health
     envVars:
       - key: ENV
         value: production
@@ -19,6 +20,8 @@ services:
         sync: false
       - key: CORS_ORIGINS
         value: https://lenspilot-backend.onrender.com
+      - key: RUN_INGEST_ON_STARTUP
+        value: true
 
 databases:
   - name: lenspilot-db
