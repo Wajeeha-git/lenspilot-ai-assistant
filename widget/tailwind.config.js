@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ["Sora", "sans-serif"],
-        body: ["Inter", "sans-serif"],
+        display: ["Aptos", "Inter", "Segoe UI", "sans-serif"],
+        body: ["Aptos", "Inter", "Segoe UI", "sans-serif"],
       },
       colors: {
         ink: "#0A0E1A",

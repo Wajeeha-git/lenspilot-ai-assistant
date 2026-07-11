@@ -5,7 +5,7 @@ import { ASSISTANT_IDENTITY, SUGGESTED_QUESTIONS } from "../mock/knowledgeBase.j
 export default function ChatWidget() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: "assistant", text: ASSISTANT_IDENTITY.greeting, sources: [] },
+    { role: "assistant", text: ASSISTANT_IDENTITY.greeting },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ export default function ChatWidget() {
       if (res.error) {
         setError(res.error);
       } else {
-        setMessages((m) => [...m, { role: "assistant", text: res.reply, sources: res.sources || [] }]);
+        setMessages((m) => [...m, { role: "assistant", text: res.reply }]);
       }
     } catch (e) {
       setError("Couldn't reach the assistant. Please try again.");
@@ -44,19 +44,6 @@ export default function ChatWidget() {
     if (lastUser) send(lastUser.text);
   };
 
-  const sourceLabel = (source) => {
-    if (!source) return "Source";
-    if (typeof source === "string") return source;
-    const title = source.document_title || source.category || "Source";
-    const category = source.category ? ` ${source.category}` : "";
-    return `${title}${category}`;
-  };
-
-  const sourceKey = (source, index) => {
-    if (typeof source === "string") return `${source}-${index}`;
-    return `${source.document_id || "doc"}-${source.category || "cat"}-${index}`;
-  };
-
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end font-body">
       {open && (
@@ -64,7 +51,6 @@ export default function ChatWidget() {
           className="mb-4 w-[92vw] max-w-sm sm:w-96 rounded-2xl bg-panel/90 border border-hair backdrop-blur-xl shadow-glow overflow-hidden flex flex-col animate-rise"
           style={{ height: "min(600px, 72vh)" }}
         >
-          {/* header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-hair bg-panel/60 shrink-0">
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center shrink-0 overflow-hidden">
@@ -82,11 +68,10 @@ export default function ChatWidget() {
               aria-label="Close chat"
               className="text-slate-400 hover:text-white transition-colors p-1"
             >
-              ✕
+              x
             </button>
           </div>
 
-          {/* messages */}
           <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"} animate-rise`}>
@@ -98,18 +83,6 @@ export default function ChatWidget() {
                   }`}
                 >
                   <p className="m-0">{m.text}</p>
-                  {m.sources && m.sources.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {m.sources.map((s, j) => (
-                        <span
-                          key={sourceKey(s, `${i}-${j}`)}
-                          className="inline-flex items-center gap-1 text-[10.5px] px-2 py-0.5 rounded-full bg-black/25 border border-hair text-teal-300"
-                        >
-                          🏷 {sourceLabel(s)}
-                        </span>
-                      ))}
-                    </div>
-                  )}
                 </div>
               </div>
             ))}
@@ -150,7 +123,6 @@ export default function ChatWidget() {
             )}
           </div>
 
-          {/* input — free text, always available */}
           <div className="p-3 border-t border-hair bg-panel/60 shrink-0">
             <form
               onSubmit={(e) => {
@@ -171,7 +143,7 @@ export default function ChatWidget() {
                 aria-label="Send message"
                 className="w-9 h-9 rounded-full bg-gradient-to-br from-iris to-iris2 flex items-center justify-center text-white disabled:opacity-40 transition-opacity shrink-0"
               >
-                ➤
+                &gt;
               </button>
             </form>
             <p className="text-center text-[10.5px] text-slate-500 mt-2">
@@ -181,13 +153,12 @@ export default function ChatWidget() {
         </div>
       )}
 
-      {/* floating toggle button */}
       <button
         onClick={() => setOpen(!open)}
         aria-label={open ? "Close chat widget" : "Open chat widget"}
         className="relative w-14 h-14 rounded-full bg-gradient-to-br from-iris to-iris2 shadow-glow flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform"
       >
-        {open ? "✕" : "💬"}
+        {open ? "x" : "Chat"}
         {!open && <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-red-500 border-2 border-ink" />}
       </button>
     </div>

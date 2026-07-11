@@ -1,56 +1,44 @@
-// ============================================================
-// MEMBER 2 — KNOWLEDGE / PROMPT OWNER
-// ============================================================
-// Edit this file only. Plain JS objects — no React knowledge needed.
-// Keep the key names (keywords, answer, source) the same so the
-// widget code keeps working.
-
 export const ASSISTANT_IDENTITY = {
   name: "LensPilot AI Assistant",
-  greeting: "Hi there! 👋 How can I help you today?",
-  fallback:
-    "I don't have that in my docs yet, so I don't want to guess. Could you rephrase, or ask about pricing, features, or getting started?",
+  greeting: "Hi there. How can I help you today?",
+  fallback: "I'm not certain about that. Please contact the LensPilot support team.",
 };
 
-// Quick-reply chips shown under the greeting.
 export const SUGGESTED_QUESTIONS = [
   "What is LensPilot?",
   "How does LensPilot work?",
-  "Do I need to install an app?",
+  "Do customers need an app?",
 ];
 
-// Mock knowledge base — keyword-matched to fake a real RAG answer
-// while there's no backend yet. `source` mirrors the "sources" field
-// the real /chat response will send once Member 1's endpoint is live.
 export const KNOWLEDGE_BASE = [
   {
     keywords: ["what is", "about", "platform", "lenspilot"],
     answer:
-      "LensPilot helps you build and embed AI-powered chat experiences seamlessly into your website or app. It's fast, secure, and easy to use.",
+      "LensPilot is an AI-powered browser-based platform that lets customers virtually try on contact lenses using real-time iris segmentation and augmented reality.",
     source: "product-overview.md",
   },
   {
     keywords: ["how does it work", "how it works", "work"],
     answer:
-      "You connect your docs, LensPilot indexes them, and the widget answers visitor questions using only that content — with sources attached to every answer.",
-    source: "how-it-works.md",
+      "A customer scans a shopkeeper's QR code, opens LensPilot in the browser, allows camera access, and sees contact lens colors overlaid on their eyes in real time.",
+    source: "workflow.md",
   },
   {
-    keywords: ["free", "trial", "pricing", "cost", "price"],
+    keywords: ["app", "install", "download"],
     answer:
-      "Yes — there's a free trial with no credit card required. Paid plans unlock higher usage limits and custom branding.",
-    source: "pricing.md",
+      "No. LensPilot is browser-based, so customers can use the try-on experience without installing an app.",
+    source: "faq-general.md",
   },
   {
-    keywords: ["secure", "privacy", "data", "encrypt"],
+    keywords: ["camera", "permission", "access"],
     answer:
-      "Your data is encrypted in transit and at rest, and it's never used to train shared models.",
-    source: "security-faq.md",
+      "LensPilot needs camera access so the AI can detect the iris and place the lens overlay in real time.",
+    source: "faq-technical.md",
   },
   {
-    keywords: ["integrate", "embed", "install", "script"],
+    keywords: ["shopkeeper", "retailer", "qr"],
     answer:
-      "Add one script tag to your site and the widget appears automatically — no framework required.",
-    source: "integration-guide.md",
+      "Shopkeepers register, subscribe to a plan, and receive a unique QR code that customers scan to start the virtual try-on.",
+    source: "workflow.md",
   },
 ];
