@@ -2,8 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { ChatService } from "../services/chatService.js";
 import { ASSISTANT_IDENTITY, SUGGESTED_QUESTIONS } from "../mock/knowledgeBase.js";
 
-export default function ChatWidget() {
-  const [open, setOpen] = useState(false);
+// `defaultOpen` lets a parent (e.g. the landing page) open the widget on mount.
+export default function ChatWidget({ defaultOpen = false }) {
+  const [open, setOpen] = useState(defaultOpen);
   const [messages, setMessages] = useState([
     { role: "assistant", text: ASSISTANT_IDENTITY.greeting },
   ]);
@@ -11,6 +12,11 @@ export default function ChatWidget() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const scrollRef = useRef(null);
+
+  // If a parent flips defaultOpen to true later, open the widget.
+  useEffect(() => {
+    if (defaultOpen) setOpen(true);
+  }, [defaultOpen]);
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -66,9 +72,9 @@ export default function ChatWidget() {
             <button
               onClick={() => setOpen(false)}
               aria-label="Close chat"
-              className="text-slate-400 hover:text-white transition-colors p-1"
+              className="text-slate-400 hover:text-white transition-colors p-1 text-lg leading-none"
             >
-              x
+              ✕
             </button>
           </div>
 
@@ -141,9 +147,9 @@ export default function ChatWidget() {
                 type="submit"
                 disabled={!input.trim() || loading}
                 aria-label="Send message"
-                className="w-9 h-9 rounded-full bg-gradient-to-br from-iris to-iris2 flex items-center justify-center text-white disabled:opacity-40 transition-opacity shrink-0"
+                className="w-9 h-9 rounded-full bg-gradient-to-br from-iris to-iris2 flex items-center justify-center text-white disabled:opacity-40 transition-opacity shrink-0 font-bold"
               >
-                &gt;
+                ›
               </button>
             </form>
             <p className="text-center text-[10.5px] text-slate-500 mt-2">
@@ -156,9 +162,9 @@ export default function ChatWidget() {
       <button
         onClick={() => setOpen(!open)}
         aria-label={open ? "Close chat widget" : "Open chat widget"}
-        className="relative w-14 h-14 rounded-full bg-gradient-to-br from-iris to-iris2 shadow-glow flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform"
+        className="relative w-14 h-14 rounded-full bg-gradient-to-br from-iris to-iris2 shadow-glow flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform text-sm font-semibold"
       >
-        {open ? "x" : "Chat"}
+        {open ? "✕" : "Chat"}
         {!open && <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-red-500 border-2 border-ink" />}
       </button>
     </div>

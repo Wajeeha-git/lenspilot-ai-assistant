@@ -1,3 +1,6 @@
+import { useState } from "react";
+import ChatWidget from "./components/ChatWidget.jsx";
+
 const COMPANY_CARDS = [
   {
     label: "Company",
@@ -49,11 +52,13 @@ function InfoCard({ label, title, desc }) {
   );
 }
 
-function ChatPreview() {
+// Static preview shown in the right column before the user starts chatting.
+function ChatPreview({ onStartChat }) {
   return (
     <aside className="relative rounded-[28px] bg-panel/75 border border-hair shadow-glow overflow-hidden min-h-[620px]">
       <div className="absolute inset-0 bg-gradient-to-br from-iris/20 via-transparent to-iris2/10" />
       <div className="relative z-10 h-full flex flex-col">
+        {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-hair bg-panel/50">
           <div className="flex items-center gap-3">
             <LogoBadge className="w-10 h-10" />
@@ -65,6 +70,7 @@ function ChatPreview() {
           <span className="w-2.5 h-2.5 rounded-full bg-teal" />
         </div>
 
+        {/* Mock messages */}
         <div className="flex-1 px-5 py-6 space-y-4">
           <div className="max-w-[82%] rounded-2xl rounded-bl-sm bg-panel2 border border-hair px-4 py-3 text-sm leading-relaxed text-slate-200">
             Hi, I am LensPilot. Ask me about virtual try-on, shopkeeper setup, lens catalogues, or the customer flow.
@@ -85,10 +91,14 @@ function ChatPreview() {
           </div>
         </div>
 
+        {/* CTA composer */}
         <div className="p-5 border-t border-hair bg-panel/60">
           <div className="rounded-2xl border border-hair bg-panel2/80 p-3">
             <p className="px-2 pb-3 text-sm text-slate-500">Ask about LensPilot...</p>
-            <button className="w-full rounded-full bg-gradient-to-r from-iris to-iris2 px-5 py-3 text-sm font-semibold text-white shadow-glow hover:brightness-110 transition">
+            <button
+              onClick={onStartChat}
+              className="w-full rounded-full bg-gradient-to-r from-iris to-iris2 px-5 py-3 text-sm font-semibold text-white shadow-glow hover:brightness-110 transition"
+            >
               Start chat
             </button>
           </div>
@@ -99,10 +109,14 @@ function ChatPreview() {
 }
 
 export default function App() {
+  // When true, the ChatWidget opens automatically.
+  const [chatOpen, setChatOpen] = useState(false);
+
   return (
     <div className="min-h-screen text-slate-200 font-body">
       <main className="max-w-7xl mx-auto w-full px-6 py-8 sm:py-10 lg:py-14">
         <section className="grid lg:grid-cols-[minmax(0,1fr)_minmax(360px,460px)] gap-8 lg:gap-12 items-start">
+          {/* ── Left column ── */}
           <div className="flex flex-col">
             <div className="flex items-center gap-3">
               <LogoBadge className="w-10 h-10" />
@@ -123,7 +137,10 @@ export default function App() {
                 Accurate, realistic, and accessible virtual contact lens try-on for modern optical retail.
               </p>
               <div className="mt-8">
-                <button className="w-full max-w-[610px] lg:max-w-[392px] rounded-full bg-gradient-to-r from-iris to-iris2 px-5 py-3 text-sm font-semibold text-white shadow-glow hover:brightness-110 transition">
+                <button
+                  onClick={() => setChatOpen(true)}
+                  className="w-full max-w-[610px] lg:max-w-[392px] rounded-full bg-gradient-to-r from-iris to-iris2 px-5 py-3 text-sm font-semibold text-white shadow-glow hover:brightness-110 transition"
+                >
                   Start chat
                 </button>
               </div>
@@ -136,9 +153,13 @@ export default function App() {
             </div>
           </div>
 
-          <ChatPreview />
+          {/* ── Right column: static preview → opens real widget on click ── */}
+          <ChatPreview onStartChat={() => setChatOpen(true)} />
         </section>
       </main>
+
+      {/* The real AI assistant — connects to the backend via ChatService */}
+      <ChatWidget defaultOpen={chatOpen} />
     </div>
   );
 }
